@@ -163,13 +163,16 @@ async def home(request):
     <div class="container">
         <!-- Display the custom message -->
         <div class="message">
-            <h2>Welcome to Modmail Hosting</h2>
+            <h2>Welcome to Cj's Commisions Modmail Hosting</h2>
         </div>
 
         <!-- Configuration form section -->
-        <div class="form-section">
-            <h3>Modmail Bot Configuration</h3>
-            <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
+       <div class="form-section">
+    <p style="font-size: 18px; font-weight: bold;">Thank you for subscibing to our Modmail Bot Hosting service! Please follow the insructions below and after generating
+    Send it to the support bot. </p>
+    <h3>Modmail Bot Configuration</h3>
+    <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
+
 
             <form action="/submit" method="post">
                 <label for="token">Bot Token <span style="color: red;">*</span>:</label>
