@@ -1,26 +1,34 @@
 from sanic import Sanic
 from sanic.response import html
+from jinja2 import Template
 
 app = Sanic(__name__)
 
+# Your HTML template as a string
+HTML_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<!-- Your shared HTML template here -->
+</html>
+"""
+
 @app.route('/')
 async def home(request):
-    # Render the form without any generated output
-    return html('''<!DOCTYPE html>
-    <html lang="en">
-    <!-- Your HTML content here -->
-    ''')  # Place your full HTML template here.
+    # Render the form without generated output initially
+    template = Template(HTML_TEMPLATE)
+    rendered_html = template.render(message="Welcome to Modmail Hosting", formatted_output=None)
+    return html(rendered_html)
 
 @app.route('/submit', methods=['POST'])
 async def submit(request):
-    # Process form data and generate configuration
+    # Get form data
     token = request.form.get('token')
     guild_id = request.form.get('guild_id')
     owners = request.form.get('owners')
     log_url = request.form.get('log_url')
     modmail_guild_id = request.form.get('modmail_guild_id', '')
 
-    # Create a formatted configuration (replace with your logic)
+    # Generate formatted configuration
     formatted_output = f"""
     BOT_TOKEN={token}
     GUILD_ID={guild_id}
@@ -29,27 +37,10 @@ async def submit(request):
     MODMAIL_GUILD_ID={modmail_guild_id}
     """
 
-    # Render the HTML with the formatted output
-    return html(f'''<!DOCTYPE html>
-    <html lang="en">
-    <body>
-        <!-- Your HTML content here -->
-        <div class="container">
-            <!-- Form Section -->
-            <div class="form-section">
-                <form action="/submit" method="post">
-                    <input type="text" name="token" placeholder="Enter Bot Token" required>
-                    <input type="text" name="guild_id" placeholder="Enter Guild ID" required>
-                    <input type="text" name="owners" placeholder="Enter Owners" required>
-                    <input type="text" name="log_url" placeholder="Enter Log URL" required>
-                    <input type="submit" value="Generate Configuration">
-                </form>
-            </div>
-            <!-- Conditionally display the output -->
-            <div class="form-section">
-                <h3>Generated Configuration:</h3>
-                <pre>{formatted_output}</pre>
-            </div>
-        </div>
-    </body>
-    </html>''')
+    # Render the HTML with the generated configuration
+    template = Template(HTML_TEMPLATE)
+    rendered_html = template.render(message="Your Configuration is Ready!", formatted_output=formatted_output)
+    return html(rendered_html)
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=8080)
