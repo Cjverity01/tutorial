@@ -4,7 +4,9 @@ from sanic.request import Request
 from sanic_jinja2 import SanicJinja2  # Import sanic-jinja2
 
 app = Sanic("ConfigFormatterApp")
-app.config.from_mapping(TEMPLATES_AUTO_RELOAD=True)
+
+# Directly set the configuration variable
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # Setup SanicJinja2 for templating
 jinja = SanicJinja2(app)
