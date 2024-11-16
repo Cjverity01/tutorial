@@ -236,4 +236,30 @@
             if (body.classList.contains('dark-mode')) {
                 icon.classList.remove('fa-sun');
                 icon.classList.add('fa-moon');
-                localStorage.set
+                localStorage.setItem('theme', 'dark'); // Save the theme to localStorage
+            } else {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'light'); // Save the theme to localStorage
+            }
+        }
+
+        // Check the stored theme on page load
+        window.onload = () => {
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme) {
+                if (storedTheme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    document.querySelector('.toggle-button i').classList.remove('fa-sun');
+                    document.querySelector('.toggle-button i').classList.add('fa-moon');
+                } else {
+                    document.body.classList.add('light-mode');
+                    document.querySelector('.toggle-button i').classList.remove('fa-moon');
+                    document.querySelector('.toggle-button i').classList.add('fa-sun');
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
