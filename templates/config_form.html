@@ -38,4 +38,234 @@
             background-color: #f8f9fa;
             padding: 30px;
             border-radius: 12px;
-            mar
+            margin-bottom: 30px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        .form-section input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .form-section input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .form-section input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .message {
+            background-color: #e7f4e4;
+            color: #2d6a4f;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 16px;
+            color: #888;
+            font-family: 'Arial', sans-serif;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #333; /* Ensure text in pre blocks is visible in both themes */
+        }
+
+        /* Light mode */
+        body.light-mode {
+            background-color: #f4f7fc;
+            color: #333; /* Light mode text color */
+        }
+        .container.light-mode {
+            background-color: #fff;
+        }
+        .form-section.light-mode {
+            background-color: #f8f9fa;
+        }
+
+        /* Dark mode */
+        body.dark-mode {
+            background-color: #181818;
+            color: #ccc; /* Dark mode text color */
+        }
+        .container.dark-mode {
+            background-color: #2b2b2b;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .form-section.dark-mode {
+            background-color: #333;
+        }
+        .form-section input[type="text"].dark-mode {
+            background-color: #555;
+            color: #eee;
+            border: 1px solid #666;
+        }
+        .form-section input[type="submit"].dark-mode {
+            background-color: #1a8c59;
+        }
+        .message.dark-mode {
+            background-color: #2a3d34;
+            color: #b1e0b4;
+        }
+        .footer.dark-mode {
+            color: #bbb;
+        }
+
+        /* Button styling */
+        .toggle-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .toggle-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Icon styling */
+        .toggle-button i {
+            font-size: 20px;
+        }
+
+        /* Remove blue color from headings and labels */
+        h1, h2, h3, label {
+            color: inherit; /* Inherit color from parent (either light or dark mode) */
+        }
+    </style>
+</head>
+<body class="light-mode">
+
+    <!-- Button to toggle between light and dark modes -->
+    <button class="toggle-button" onclick="toggleTheme()">
+        <i class="fas fa-sun"></i> <!-- Sun icon for light mode -->
+    </button>
+
+    <div class="container">
+        <!-- Display the custom message -->
+        <div class="message">
+            <h2>{{ message }}</h2>
+        </div>
+
+        <!-- Configuration form section -->
+        <div class="form-section">
+            <h3>Modmail Bot Configuration</h3>
+            <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
+
+            <form action="/submit" method="post">
+                <label for="token">Bot Token <span style="color: red;">*</span>:</label>
+                <input type="text" id="token" name="token" placeholder="Enter your bot token" required>
+
+                <label for="guild_id">Guild ID <span style="color: red;">*</span>:</label>
+                <input type="text" id="guild_id" name="guild_id" placeholder="Enter the server (guild) ID" required>
+
+                <label for="owners">Owners <span style="color: red;">*</span>:</label>
+                <input type="text" id="owners" name="owners" placeholder="Enter bot owner(s) ID" required>
+
+                <label for="log_url">Log URL <span style="color: red;">*</span>:</label>
+                <input type="text" id="log_url" name="log_url" placeholder="Enter your log URL" required>
+
+                <label for="modmail_guild_id">Modmail Guild ID (Optional):</label>
+                <input type="text" id="modmail_guild_id" name="modmail_guild_id" placeholder="Enter Modmail Guild ID (optional)">
+
+                <input type="submit" value="Generate Configuration">
+            </form>
+        </div>
+
+        <!-- Display the formatted config output if available -->
+        {% if formatted_output %}
+            <div class="form-section">
+                <h3>Generated Configuration:</h3>
+                <pre>{{ formatted_output }}</pre>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        <p>Powered by Cj's Commissions</p>
+    </div>
+
+    <script>
+        // Function to toggle between light and dark mode
+        function toggleTheme() {
+            const body = document.body;
+            const container = document.querySelector('.container');
+            const formSection = document.querySelector('.form-section');
+            const inputs = document.querySelectorAll('input[type="text"]');
+            const submitButton = document.querySelector('input[type="submit"]');
+            const message = document.querySelector('.message');
+            const footer = document.querySelector('.footer');
+            const button = document.querySelector('.toggle-button');
+            const icon = button.querySelector('i');
+
+            // Toggle classes for light and dark mode
+            body.classList.toggle('dark-mode');
+            container.classList.toggle('dark-mode');
+            formSection.classList.toggle('dark-mode');
+            message.classList.toggle('dark-mode');
+            footer.classList.toggle('dark-mode');
+            button.classList.toggle('dark-mode');
+
+            // Toggle the sun/moon icon
+            if (body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'dark'); // Save dark theme
+            } else {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'light'); // Save light theme
+            }
+
+            // Apply dark mode styling to inputs and buttons
+            inputs.forEach(input => input.classList.toggle('dark-mode'));
+            submitButton.classList.toggle('dark-mode');
+        }
+
+        // Check the stored theme on page load
+        window.onload = () => {
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme) {
+                if (storedTheme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    document.querySelector('.toggle-button i').classList.remove('fa-sun');
+                    document.querySelector('.toggle-button i').classList.add('fa-moon');
+                } else {
+                    document.body.classList.add('light-mode');
+                    document.querySelector('.toggle-button i').classList.remove('fa-moon');
+                    document.querySelector('.toggle-button i').classList.add('fa-sun');
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
