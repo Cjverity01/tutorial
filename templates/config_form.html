@@ -1,27 +1,39 @@
-from sanic import Sanic
-from sanic.response import html
-from sanic.request import Request
-from sanic_jinja2 import SanicJinja2
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modmail Configuration</title>
+</head>
+<body>
 
-# Initialize the Sanic app
-app = Sanic("ConfigFormatterApp")
+    <!-- Display the custom message -->
+    <h2>{{ message }}</h2>
 
-# Configure Sanic
-app.config['TEMPLATES_AUTO_RELOAD'] = True  # Automatically reload templates on changes
+    <form action="/submit" method="post">
+        <label for="token">TOKEN:</label>
+        <input type="text" id="token" name="token" required><br><br>
 
-# Initialize the Jinja2 templating engine
-jinja = SanicJinja2(app)
+        <label for="guild_id">GUILD_ID:</label>
+        <input type="text" id="guild_id" name="guild_id" required><br><br>
 
-# Test route to check if the server is working
-@app.route('/test')
-async def test_route(request):
-    return html('<h1>Server is running!</h1>')
+        <label for="owners">OWNERS:</label>
+        <input type="text" id="owners" name="owners" required><br><br>
 
-# Home route: Show the configuration form
-@app.route('/')
-async def config_form(request):
-    return jinja.render('config_form.html', request)
+        <label for="log_url">LOG_URL:</label>
+        <input type="text" id="log_url" name="log_url" required><br><br>
 
-# Submit route: Handle form submission and display the formatted result
-@app.route('/submit', methods=['POST'])
-async def submit_c
+        <label for="modmail_guild_id">MODMAIL_GUILD_ID (optional):</label>
+        <input type="text" id="modmail_guild_id" name="modmail_guild_id"><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Display the formatted config output if available -->
+    {% if formatted_output %}
+        <h3>Your Config Output:</h3>
+        <pre>{{ formatted_output }}</pre>
+    {% endif %}
+
+</body>
+</html>
