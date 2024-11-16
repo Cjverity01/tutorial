@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modmail Hosting Configuration</title>
-    
-    <!-- Removed Font Awesome link for now -->
     <style>
         /* Base styles for both light and dark mode */
         body {
@@ -133,15 +131,11 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            font-size: 16px;
+            font-size: 20px;
         }
 
         .toggle-button:hover {
             background-color: #45a049;
-        }
-
-        .toggle-button i {
-            font-size: 20px;
         }
 
         /* Remove blue color from headings and labels */
@@ -154,7 +148,8 @@
 
     <!-- Button to toggle between light and dark modes -->
     <button class="toggle-button" onclick="toggleTheme()">
-        <i class="fas fa-sun"></i>
+        <!-- Light mode icon (sun) -->
+        <img src="https://img.icons8.com/ios-filled/50/000000/sun.png" id="theme-icon" alt="Sun/Moon" width="30px"/>
     </button>
 
     <div class="container">
@@ -212,7 +207,7 @@
             const message = document.querySelector('.message');
             const footer = document.querySelector('.footer');
             const button = document.querySelector('.toggle-button');
-            const icon = button.querySelector('i');
+            const themeIcon = document.getElementById('theme-icon');
 
             // Toggle classes for light and dark mode
             body.classList.toggle('dark-mode');
@@ -222,11 +217,11 @@
             footer.classList.toggle('dark-mode');
             button.classList.toggle('dark-mode');
 
-            // Change button text based on mode
+            // Change button icon based on mode
             if (body.classList.contains('dark-mode')) {
-                button.innerHTML = '<i class="fas fa-moon"></i>';
+                themeIcon.src = "https://img.icons8.com/ios-filled/50/FFFFFF/moon.png";  // Moon icon for dark mode
             } else {
-                button.innerHTML = '<i class="fas fa-sun"></i>';
+                themeIcon.src = "https://img.icons8.com/ios-filled/50/000000/sun.png";  // Sun icon for light mode
             }
 
             // Apply dark mode styling to inputs and buttons
