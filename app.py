@@ -264,3 +264,15 @@ Modmail Guild ID: {modmail_guild_id if modmail_guild_id else 'N/A'}
     <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Generated Configuration</title>
+    </head>
+    <body>
+        <h1>Generated Configuration</h1>
+        <pre>{formatted_output}</pre>
+    </body>
+    </html>
+    ''')
+
+if __name__ == "__main__":
+    app.run(debug=True)
