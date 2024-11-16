@@ -85,9 +85,9 @@
 
         /* Dark mode for input fields */
         .form-section input[type="text"].dark-mode {
-            background-color: #555;
-            color: #eee;
-            border: 1px solid #666;
+            background-color: #444; /* Dark gray background for input fields */
+            color: #eee; /* Light text color for inputs */
+            border: 1px solid #666; /* Dark border for inputs */
         }
 
         .form-section input[type="submit"] {
@@ -254,14 +254,16 @@
             footer.classList.toggle('dark-mode');
             button.classList.toggle('dark-mode');
 
-            // Toggle the sun/moon icon
+            // Change button text based on mode
             if (body.classList.contains('dark-mode')) {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
+                button.innerHTML = '<i class="fas fa-moon"></i>'; // Moon icon for dark mode
             } else {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
+                button.innerHTML = '<i class="fas fa-sun"></i>'; // Sun icon for light mode
             }
+
+            // Apply dark mode styling to inputs and buttons
+            inputs.forEach(input => input.classList.toggle('dark-mode'));
+            submitButton.classList.toggle('dark-mode');
         }
     </script>
 
