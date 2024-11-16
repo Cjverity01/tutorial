@@ -1,4 +1,12 @@
-<!DOCTYPE html>
+from sanic import Sanic
+from sanic.response import html
+
+app = Sanic(__name__)
+
+@app.route('/')
+async def home(request):
+    # Render the HTML template as a response
+    return html('''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -155,7 +163,7 @@
     <div class="container">
         <!-- Display the custom message -->
         <div class="message">
-            <h2>{{ message }}</h2>
+            <h2>Welcome to Modmail Hosting</h2>
         </div>
 
         <!-- Configuration form section -->
@@ -231,4 +239,7 @@
     </script>
 
 </body>
-</html>
+</html>''')
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=8080)
