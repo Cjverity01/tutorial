@@ -17,10 +17,12 @@ jinja = SanicJinja2(app)
 async def test_route(request):
     return html('<h1>Server is running!</h1>')
 
-# Home route: Show the configuration form
+# Home route: Show the configuration form with a custom message
 @app.route('/')
 async def config_form(request):
-    return jinja.render('config_form.html', request)
+    # Your custom message to be displayed
+    message = "Thank you for subscribing to our Modmail Hosting service. Please do the form below for us to deploy your bot."
+    return jinja.render('config_form.html', request, message=message)
 
 # Submit route: Handle form submission and display the formatted result
 @app.route('/submit', methods=['POST'])
