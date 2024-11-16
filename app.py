@@ -177,7 +177,7 @@ async def home(request):
             <h3>Modmail Bot Configuration</h3>
             <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
 
-            <form action="/submit" method="post">
+            <form action="/submit" method="post" id="configForm">
                 <label for="token">Bot Token <span style="color: red;">*</span>:</label>
                 <input type="text" id="token" name="token" placeholder="Enter your bot token" required>
 
@@ -195,6 +195,15 @@ async def home(request):
 
                 <input type="submit" value="Generate Configuration">
             </form>
+        </div>
+
+        <!-- Button to show the generated configuration -->
+        <button id="showConfigBtn" style="display:none;" onclick="showConfig()">Show Generated Configuration</button>
+
+        <!-- Placeholder for generated config -->
+        <div id="generatedConfig" style="display:none;">
+            <h3>Generated Configuration:</h3>
+            <pre id="configOutput"></pre>
         </div>
 
     </div>
@@ -235,42 +244,43 @@ async def home(request):
             inputs.forEach(input => input.classList.toggle('dark-mode'));
             submitButton.classList.toggle('dark-mode');
         }
+
+        // Function to show the generated configuration
+        function showConfig() {
+            const form = document.getElementById("configForm");
+            const showConfigBtn = document.getElementById("showConfigBtn");
+            const generatedConfig = document.getElementById("generatedConfig");
+            const configOutput = document.getElementById("configOutput");
+
+            // Simulate generating the config from form data (replace with actual logic)
+            const configData = {
+                token: document.getElementById("token").value,
+                guild_id: document.getElementById("guild_id").value,
+                owners: document.getElementById("owners").value,
+                log_url: document.getElementById("log_url").value,
+                modmail_guild_id: document.getElementById("modmail_guild_id").value
+            };
+
+            // Format the config as a string
+            const formattedConfig = `
+Bot Token: ${configData.token}
+Guild ID: ${configData.guild_id}
+Owners: ${configData.owners}
+Log URL: ${configData.log_url}
+Modmail Guild ID: ${configData.modmail_guild_id}
+            `;
+
+            // Display the generated configuration
+            configOutput.textContent = formattedConfig;
+
+            // Show the config and the button
+            showConfigBtn.style.display = "none";
+            generatedConfig.style.display = "block";
+        }
     </script>
 
 </body>
 </html>''')
-
-@app.route('/submit', methods=['POST'])
-async def submit(request):
-    # Extract form data from the request
-    token = request.form.get('token')
-    guild_id = request.form.get('guild_id')
-    owners = request.form.get('owners')
-    log_url = request.form.get('log_url')
-    modmail_guild_id = request.form.get('modmail_guild_id', '')
-
-    # Format the configuration into the required structure (example)
-    formatted_output = f"""
-Bot Token: {token}
-Guild ID: {guild_id}
-Owners: {owners}
-Log URL: {log_url}
-Modmail Guild ID: {modmail_guild_id}
-"""
-    return html(f'''
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Generated Configuration</title>
-    </head>
-    <body>
-        <h1>Generated Configuration</h1>
-        <pre>{formatted_output}</pre>
-    </body>
-    </html>
-    ''')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
