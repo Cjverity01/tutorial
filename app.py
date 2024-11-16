@@ -1,5 +1,6 @@
 from sanic import Sanic
-from sanic.response import html
+from sanic.response import html, json
+from sanic.request import Request
 
 app = Sanic(__name__)
 
@@ -165,19 +166,15 @@ async def home(request):
         <div class="message">
             <h2>Welcome to Cj's Commisions Modmail Hosting</h2>
         </div>
-<div class="form-section">
-    <p style="font-size: 18px; font-weight: bold;">Thank's For subscribing to our Modmail Hosting Service! Please follow the information below and send the generated code to support!</p>
-    <h3>Modmail Bot Configuration</h3>
-    <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
-
-            <p>Welcome to the Modmail Bot configuration page! Please fill out the form to generate your configuration.</p>
+        <div class="form-section">
+            <p style="font-size: 18px; font-weight: bold;">Thank's For subscribing to our Modmail Hosting Service! Please follow the information below and send the generated code to support!</p>
+            <h3>Modmail Bot Configuration</h3>
+            <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
         </div>
 
         <!-- Configuration form section -->
         <div class="form-section">
             <h3>Modmail Bot Configuration</h3>
-            <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
-
             <form action="/submit" method="post">
                 <label for="token">Bot Token <span style="color: red;">*</span>:</label>
                 <input type="text" id="token" name="token" placeholder="Enter your bot token" required>
@@ -248,5 +245,6 @@ async def home(request):
 </body>
 </html>''')
 
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8080)
+@app.route('/submit', methods=['POST'])
+async def submit(request):
+    # Extract form data from the request
