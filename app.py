@@ -12,6 +12,11 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True  # Automatically reload templates on 
 # Initialize the Jinja2 templating engine
 jinja = SanicJinja2(app)
 
+# Test route to check if the server is working
+@app.route('/test')
+async def test_route(request):
+    return html('<h1>Server is running!</h1>')
+
 # Home route: Show the configuration form
 @app.route('/')
 async def config_form(request):
@@ -20,6 +25,9 @@ async def config_form(request):
 # Submit route: Handle form submission and display the formatted result
 @app.route('/submit', methods=['POST'])
 async def submit_config(request: Request):
+    # Print form data for debugging
+    print(request.form)  # <-- Debugging line
+
     # Extract form data (key-value pairs)
     token = request.form.get('token', [None])[0]
     guild_id = request.form.get('guild_id', [None])[0]
@@ -43,8 +51,9 @@ async def submit_config(request: Request):
     # Join the list into a single string with line breaks
     formatted_output = "\n".join(config_output)
 
+    # Return the result to the template
     return await jinja.render('config_form.html', request, formatted_output=formatted_output)
 
 # Ensure app runs only when executed directly (not imported as a module)
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)  # Changed port to 8080
+    app.run(host='0.0.0.0', port=8080, debug=True)  # Debug enabled
