@@ -11,7 +11,7 @@ async def home(request):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modmail Hosting Configuration</title>
+    <title>Cj's Commisions Modmail Configuration</title>
     <style>
         /* Base styles for both light and dark mode */
         body {
