@@ -165,9 +165,11 @@ async def home(request):
         <div class="message">
             <h2>Welcome to Cj's Commisions Modmail Hosting</h2>
         </div>
+<div class="form-section">
+    <p style="font-size: 18px; font-weight: bold;">Thank's For subscribing to our Modmail Hosting Service! Please follow the information below and send the generated code to support!</p>
+    <h3>Modmail Bot Configuration</h3>
+    <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
 
-        <!-- New text added above Modmail Bot Configuration -->
-        <div class="intro-text">
             <p>Welcome to the Modmail Bot configuration page! Please fill out the form to generate your configuration.</p>
         </div>
 
