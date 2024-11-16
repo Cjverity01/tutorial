@@ -290,10 +290,10 @@ async def submit(request):
 TOKEN={token}
 GUILD_ID={guild_id}
 OWNERS={owners}
-LOG_URL{log_url}
+LOG_URL={log_url}
 """
     if staff_server:  # Only include if the field is filled out
-        formatted_config += f",MODMAIL_GUILD_ID={staff_server}\n"
+        formatted_config += f"MODMAIL_GUILD_ID={staff_server}\n"
 
     # Return the generated configuration as a JSON response
     return json({'generatedConfig': formatted_config})
