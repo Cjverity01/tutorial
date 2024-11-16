@@ -273,7 +273,7 @@ async def home(request):
 @app.route('/submit', methods=['POST'])
 async def submit(request):
     # Extract data from the form
-    token = request.form.get('token')
+    TOKEN= request.form.get('token')
     guild_id = request.form.get('guild_id')
     owners = request.form.get('owners')
     log_url = request.form.get('log_url')
@@ -281,11 +281,11 @@ async def submit(request):
 
     # Format the configuration
     formatted_config = f"""
-Bot Token: {token}
-Guild ID: {guild_id}
-Owners: {owners}
-Log URL: {log_url}
-Modmail Guild ID: {modmail_guild_id}
+TOKEN={token}
+GUILD_ID={guild_id}
+OWNERS={owners}
+LOG_URL={log_url}
+MODMAIL_GUILD_ID={modmail_guild_id}
     """
 
     # Return the generated configuration as a JSON response
