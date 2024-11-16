@@ -190,8 +190,8 @@ async def home(request):
                 <label for="log_url">Log URL <span style="color: red;">*</span>:</label>
                 <input type="text" id="log_url" name="log_url" placeholder="Enter your log URL" required>
 
-                <label for="modmail_guild_id">Modmail Guild ID (Optional):</label>
-                <input type="text" id="modmail_guild_id" name="modmail_guild_id" placeholder="Enter Modmail Guild ID (optional)">
+                <label for="staff_server">Staff Server (Optional):</label>
+                <input type="text" id="staff_server" name="staff_server" placeholder="Enter Staff Server ID (optional)">
 
                 <input type="submit" value="Generate Configuration">
             </form>
@@ -277,15 +277,15 @@ async def submit(request):
     guild_id = request.form.get('guild_id')
     owners = request.form.get('owners')
     log_url = request.form.get('log_url')
-    modmail_guild_id = request.form.get('modmail_guild_id', '')
+    staff_server = request.form.get('staff_server', '')
 
     # Format the configuration
     formatted_config = f"""
-TOKEN={token}
-GUILD_ID={guild_id}
-OWNERS={owners}
-LOG_URL{log_url}
-MODMAIL_BOT_TOKEN={modmail_guild_id}
+Bot Token: {token}
+Guild ID: {guild_id}
+Owners: {owners}
+Log URL: {log_url}
+Staff Server: {staff_server if staff_server else "Not Provided"}
     """
 
     # Return the generated configuration as a JSON response
