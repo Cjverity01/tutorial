@@ -17,4 +17,34 @@ jinja = SanicJinja2(app)
 async def config_form(request):
     return await jinja.render('config_form.html', request)
 
-# Submit route: Handle form submission 
+# Submit route: Handle form submission and display the formatted result
+@app.route('/submit', methods=['POST'])
+async def submit_config(request: Request):
+    # Extract form data (key-value pairs)
+    token = request.form.get('token', [None])[0]
+    guild_id = request.form.get('guild_id', [None])[0]
+    owners = request.form.get('owners', [None])[0]
+    log_url = request.form.get('log_url', [None])[0]
+    modmail_guild_id = request.form.get('modmail_guild_id', [None])[0]
+
+    # Prepare formatted output (KEY=VALUE format)
+    config_output = []
+    if token:
+        config_output.append(f"TOKEN={token}")
+    if guild_id:
+        config_output.append(f"GUILD_ID={guild_id}")
+    if owners:
+        config_output.append(f"OWNERS={owners}")
+    if log_url:
+        config_output.append(f"LOG_URL={log_url}")
+    if modmail_guild_id:  # Only include MODMAIL_GUILD_ID if provided
+        config_output.append(f"MODMAIL_GUILD_ID={modmail_guild_id}")
+
+    # Join the list into a single string with line breaks
+    formatted_output = "\n".join(config_output)
+
+    return await jinja.render('config_form.html', request, formatted_output=formatted_output)
+
+# Ensure app runs only when executed directly (not imported as a module)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)  # Changed port to 8080
