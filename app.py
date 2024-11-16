@@ -1,13 +1,13 @@
 from sanic import Sanic
 from sanic.response import html
 from sanic.request import Request
-from sanic.templating import Jinja2
+from sanic_jinja2 import SanicJinja2  # Import sanic-jinja2
 
 app = Sanic("ConfigFormatterApp")
 app.config.from_mapping(TEMPLATES_AUTO_RELOAD=True)
 
-# Setup Jinja2 for templating
-jinja = Jinja2(app)
+# Setup SanicJinja2 for templating
+jinja = SanicJinja2(app)
 
 # Home route: Show the configuration form
 @app.route('/')
