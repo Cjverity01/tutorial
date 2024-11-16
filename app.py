@@ -5,17 +5,9 @@ import logging
 # Initialize the Sanic app
 app = Sanic("ModmailApp")
 
-# Enable default logging (with access logs enabled)
-logging.basicConfig(level=logging.DEBUG)  # Set log level to DEBUG for full logging
-logger = logging.getLogger('sanic')
-logger.setLevel(logging.DEBUG)  # Set logger level for Sanic
-
-# Ensure Sanic access logs are enabled
-app.config['ACCESS_LOG'] = True
-
+# Serve a simple HTML form for submission
 @app.route('/')
 async def index(request):
-    # Serve a simple HTML form for submission
     return """
         <!DOCTYPE html>
         <html lang="en">
