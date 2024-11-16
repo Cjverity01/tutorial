@@ -1,5 +1,5 @@
 from sanic import Sanic
-from sanic.response import html
+from sanic.response import html, json
 
 app = Sanic(__name__)
 
@@ -282,5 +282,45 @@ Modmail Guild ID: ${configData.modmail_guild_id}
 </body>
 </html>''')
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+# POST route to handle form submission
+@app.route('/submit', methods=['POST'])
+async def submit(request):
+    # Extract data from the form
+    token = request.form.get('token')
+    guild_id = request.form.get('guild_id')
+    owners = request.form.get('owners')
+    log_url = request.form.get('log_url')
+    modmail_guild_id = request.form.get('modmail_guild_id', '')
+
+    # Format the configuration
+    formatted_config = f"""
+Bot Token: {token}
+Guild ID: {guild_id}
+Owners: {owners}
+Log URL: {log_url}
+Modmail Guild ID: {modmail_guild_id}
+    """
+
+    # Return the page with the generated configuration
+    return html(f'''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Cj's Commisions Modmail Configuration</title>
+            <style>
+                /* Styles here */
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h2>Generated Configuration:</h2>
+                <pre>{formatted_config}</pre>
+            </div>
+        </body>
+        </html>
+    ''')
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=8080)
