@@ -14,9 +14,23 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            color: #333; /* Primary text color */
+            color: #333; /* Default text color */
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        /* Light mode background color */
+        body.light-mode {
+            background-color: #ffffff; /* White background for light mode */
+            color: #333; /* Dark text color for contrast */
+        }
+
+        /* Dark mode background color */
+        body.dark-mode {
+            background-color: #181818; /* Black background for dark mode */
+            color: #ccc; /* Light text color for contrast */
+        }
+
+        /* Container settings */
         .container {
             width: 80%;
             max-width: 1000px;
@@ -27,13 +41,23 @@
             border-radius: 12px;
             transition: background-color 0.3s ease;
         }
+
+        /* Dark mode for the container */
+        .container.dark-mode {
+            background-color: #2b2b2b; /* Dark background for container */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
         h1, h2 {
-            color: #333; /* Use the primary text color */
+            color: #333;
             text-align: center;
         }
+
         h3 {
-            color: #333; /* Use the primary text color */
+            color: #333;
         }
+
+        /* Form sections */
         .form-section {
             background-color: #f8f9fa;
             padding: 30px;
@@ -42,6 +66,12 @@
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease;
         }
+
+        /* Dark mode for form sections */
+        .form-section.dark-mode {
+            background-color: #333; /* Dark background for form sections */
+        }
+
         .form-section input[type="text"] {
             width: 100%;
             padding: 14px;
@@ -52,6 +82,14 @@
             font-size: 16px;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        /* Dark mode for input fields */
+        .form-section input[type="text"].dark-mode {
+            background-color: #555;
+            color: #eee;
+            border: 1px solid #666;
+        }
+
         .form-section input[type="submit"] {
             background-color: #4CAF50;
             color: white;
@@ -63,9 +101,12 @@
             width: 100%;
             transition: background-color 0.3s ease;
         }
-        .form-section input[type="submit"]:hover {
-            background-color: #45a049;
+
+        /* Dark mode for the submit button */
+        .form-section input[type="submit"].dark-mode {
+            background-color: #1a8c59;
         }
+
         .message {
             background-color: #e7f4e4;
             color: #2d6a4f;
@@ -75,13 +116,25 @@
             text-align: center;
             font-size: 18px;
         }
+
+        /* Dark mode for message block */
+        .message.dark-mode {
+            background-color: #2a3d34;
+            color: #b1e0b4;
+        }
+
         .footer {
             text-align: center;
             margin-top: 50px;
             font-size: 16px;
             color: #888;
-            font-family: 'Arial', sans-serif;
         }
+
+        /* Dark mode for footer */
+        .footer.dark-mode {
+            color: #bbb;
+        }
+
         pre {
             background-color: #f8f9fa;
             padding: 20px;
@@ -90,47 +143,13 @@
             overflow-x: auto;
             white-space: pre-wrap;
             word-wrap: break-word;
-            color: #333; /* Ensure text in pre blocks is visible in both themes */
+            color: #333;
         }
 
-        /* Light mode */
-        body.light-mode {
-            background-color: #f4f7fc;
-            color: #333; /* Light mode text color */
-        }
-        .container.light-mode {
-            background-color: #fff;
-        }
-        .form-section.light-mode {
-            background-color: #f8f9fa;
-        }
-
-        /* Dark mode */
-        body.dark-mode {
-            background-color: #181818;
-            color: #ccc; /* Dark mode text color */
-        }
-        .container.dark-mode {
-            background-color: #2b2b2b;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
-        .form-section.dark-mode {
+        /* Dark mode for preformatted text */
+        pre.dark-mode {
             background-color: #333;
-        }
-        .form-section input[type="text"].dark-mode {
-            background-color: #555;
-            color: #eee;
-            border: 1px solid #666;
-        }
-        .form-section input[type="submit"].dark-mode {
-            background-color: #1a8c59;
-        }
-        .message.dark-mode {
-            background-color: #2a3d34;
-            color: #b1e0b4;
-        }
-        .footer.dark-mode {
-            color: #bbb;
+            color: #ccc;
         }
 
         /* Button styling */
@@ -147,6 +166,7 @@
             font-size: 16px;
             transition: background-color 0.3s ease;
         }
+
         .toggle-button:hover {
             background-color: #45a049;
         }
@@ -238,31 +258,9 @@
             if (body.classList.contains('dark-mode')) {
                 icon.classList.remove('fa-sun');
                 icon.classList.add('fa-moon');
-                localStorage.setItem('theme', 'dark'); // Save dark theme
             } else {
                 icon.classList.remove('fa-moon');
                 icon.classList.add('fa-sun');
-                localStorage.setItem('theme', 'light'); // Save light theme
-            }
-
-            // Apply dark mode styling to inputs and buttons
-            inputs.forEach(input => input.classList.toggle('dark-mode'));
-            submitButton.classList.toggle('dark-mode');
-        }
-
-        // Check the stored theme on page load
-        window.onload = () => {
-            const storedTheme = localStorage.getItem('theme');
-            if (storedTheme) {
-                if (storedTheme === 'dark') {
-                    document.body.classList.add('dark-mode');
-                    document.querySelector('.toggle-button i').classList.remove('fa-sun');
-                    document.querySelector('.toggle-button i').classList.add('fa-moon');
-                } else {
-                    document.body.classList.add('light-mode');
-                    document.querySelector('.toggle-button i').classList.remove('fa-moon');
-                    document.querySelector('.toggle-button i').classList.add('fa-sun');
-                }
             }
         }
     </script>
