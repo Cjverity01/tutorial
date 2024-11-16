@@ -3,32 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuration Formatter</title>
+    <title>Config Formatter</title>
 </head>
 <body>
-    <h1>Enter Configuration Settings</h1>
-
+    <h1>Config Formatter</h1>
     <form action="/submit" method="POST">
         <label for="token">TOKEN:</label>
-        <input type="text" id="token" name="token"><br><br>
+        <input type="text" id="token" name="token"><br>
 
         <label for="guild_id">GUILD_ID:</label>
-        <input type="text" id="guild_id" name="guild_id"><br><br>
+        <input type="text" id="guild_id" name="guild_id"><br>
 
         <label for="owners">OWNERS:</label>
-        <input type="text" id="owners" name="owners"><br><br>
+        <input type="text" id="owners" name="owners"><br>
 
         <label for="log_url">LOG_URL:</label>
-        <input type="text" id="log_url" name="log_url"><br><br>
+        <input type="text" id="log_url" name="log_url"><br>
 
-        <label for="modmail_guild_id">MODMAIL_GUILD_ID (optional):</label>
-        <input type="text" id="modmail_guild_id" name="modmail_guild_id"><br><br>
+        <label for="modmail_guild_id">MODMAIL_GUILD_ID:</label>
+        <input type="text" id="modmail_guild_id" name="modmail_guild_id"><br>
 
-        <button type="submit">Generate Configuration</button>
+        <input type="submit" value="Submit">
     </form>
 
     {% if formatted_output %}
-        <h2>Generated Configuration</h2>
+        <h2>Formatted Output:</h2>
         <pre>{{ formatted_output }}</pre>
     {% endif %}
 </body>
