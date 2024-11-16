@@ -4,33 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modmail Hosting Configuration</title>
-
-    <!-- Add Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    
+    <!-- Removed Font Awesome link for now -->
     <style>
         /* Base styles for both light and dark mode */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            color: #333; /* Default text color */
-            transition: background-color 0.3s ease, color 0.3s ease;
+            color: #333;
         }
 
         /* Light mode background color */
         body.light-mode {
-            background-color: #ffffff; /* White background for light mode */
-            color: #333; /* Dark text color for contrast */
+            background-color: #ffffff;
+            color: #333;
         }
 
         /* Dark mode background color */
         body.dark-mode {
-            background-color: #181818; /* Black background for dark mode */
-            color: #ccc; /* Light text color for contrast */
+            background-color: #181818;
+            color: #ccc;
         }
 
-        /* Container settings */
         .container {
             width: 80%;
             max-width: 1000px;
@@ -39,37 +35,22 @@
             background-color: #fff;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             border-radius: 12px;
-            transition: background-color 0.3s ease;
         }
 
-        /* Dark mode for the container */
         .container.dark-mode {
-            background-color: #2b2b2b; /* Dark background for container */
+            background-color: #2b2b2b;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
 
-        h1, h2 {
-            color: #333;
-            text-align: center;
-        }
-
-        h3 {
-            color: #333;
-        }
-
-        /* Form sections */
         .form-section {
             background-color: #f8f9fa;
             padding: 30px;
             border-radius: 12px;
             margin-bottom: 30px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease;
         }
 
-        /* Dark mode for form sections */
         .form-section.dark-mode {
-            background-color: #333; /* Dark background for form sections */
+            background-color: #333;
         }
 
         .form-section input[type="text"] {
@@ -78,16 +59,13 @@
             margin: 15px 0;
             border: 1px solid #ddd;
             border-radius: 8px;
-            box-sizing: border-box;
             font-size: 16px;
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Dark mode for input fields */
         .form-section input[type="text"].dark-mode {
-            background-color: #444; /* Dark gray background for input fields */
-            color: #eee; /* Light text color for inputs */
-            border: 1px solid #666; /* Dark border for inputs */
+            background-color: #444;
+            color: #eee;
+            border: 1px solid #666;
         }
 
         .form-section input[type="submit"] {
@@ -99,10 +77,8 @@
             cursor: pointer;
             font-size: 18px;
             width: 100%;
-            transition: background-color 0.3s ease;
         }
 
-        /* Dark mode for the submit button */
         .form-section input[type="submit"].dark-mode {
             background-color: #1a8c59;
         }
@@ -114,10 +90,8 @@
             border-radius: 12px;
             margin-bottom: 40px;
             text-align: center;
-            font-size: 18px;
         }
 
-        /* Dark mode for message block */
         .message.dark-mode {
             background-color: #2a3d34;
             color: #b1e0b4;
@@ -130,7 +104,6 @@
             color: #888;
         }
 
-        /* Dark mode for footer */
         .footer.dark-mode {
             color: #bbb;
         }
@@ -143,16 +116,13 @@
             overflow-x: auto;
             white-space: pre-wrap;
             word-wrap: break-word;
-            color: #333;
         }
 
-        /* Dark mode for preformatted text */
         pre.dark-mode {
             background-color: #333;
             color: #ccc;
         }
 
-        /* Button styling */
         .toggle-button {
             padding: 10px 20px;
             background-color: #4CAF50;
@@ -164,21 +134,19 @@
             top: 20px;
             right: 20px;
             font-size: 16px;
-            transition: background-color 0.3s ease;
         }
 
         .toggle-button:hover {
             background-color: #45a049;
         }
 
-        /* Icon styling */
         .toggle-button i {
             font-size: 20px;
         }
 
         /* Remove blue color from headings and labels */
         h1, h2, h3, label {
-            color: inherit; /* Inherit color from parent (either light or dark mode) */
+            color: inherit;
         }
     </style>
 </head>
@@ -186,7 +154,7 @@
 
     <!-- Button to toggle between light and dark modes -->
     <button class="toggle-button" onclick="toggleTheme()">
-        <i class="fas fa-sun"></i> <!-- Sun icon for light mode -->
+        <i class="fas fa-sun"></i>
     </button>
 
     <div class="container">
@@ -256,9 +224,9 @@
 
             // Change button text based on mode
             if (body.classList.contains('dark-mode')) {
-                button.innerHTML = '<i class="fas fa-moon"></i>'; // Moon icon for dark mode
+                button.innerHTML = '<i class="fas fa-moon"></i>';
             } else {
-                button.innerHTML = '<i class="fas fa-sun"></i>'; // Sun icon for light mode
+                button.innerHTML = '<i class="fas fa-sun"></i>';
             }
 
             // Apply dark mode styling to inputs and buttons
