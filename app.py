@@ -254,4 +254,23 @@ async def submit(request):
 Bot Token: {token}
 Guild ID: {guild_id}
 Owners: {owners}
-Log URL: {log
+Log URL: {log_url}
+Modmail Guild ID: {modmail_guild_id}
+"""
+    return html(f'''
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Generated Configuration</title>
+    </head>
+    <body>
+        <h1>Generated Configuration</h1>
+        <pre>{formatted_output}</pre>
+    </body>
+    </html>
+    ''')
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080, debug=True)
