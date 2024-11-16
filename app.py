@@ -197,7 +197,7 @@ async def home(request):
             </form>
         </div>
 
-        <!-- Button to show the generated configuration -->
+        <!-- Div where the generated config will be displayed -->
         <div id="generatedConfig" style="display:none;">
             <h3>Generated Configuration:</h3>
             <pre id="configOutput"></pre>
@@ -244,51 +244,4 @@ async def home(request):
 
         // Handle form submission via AJAX
         document.getElementById("configForm").addEventListener("submit", function(event) {
-            event.preventDefault();  // Prevent the form from refreshing the page
-            
-            const form = event.target;
-            const formData = new FormData(form);
-
-            // Send the form data to the backend
-            fetch("/submit", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Display the generated configuration below the form
-                const generatedConfig = document.getElementById("generatedConfig");
-                const configOutput = document.getElementById("configOutput");
-                configOutput.textContent = data.generatedConfig;
-                generatedConfig.style.display = "block";  // Show the generated config
-            })
-            .catch(error => console.error('Error submitting form:', error));
-        });
-    </script>
-</body>
-</html>''')
-
-# POST route to handle form submission
-@app.route('/submit', methods=['POST'])
-async def submit(request):
-    # Extract data from the form
-    token = request.form.get('token')
-    guild_id = request.form.get('guild_id')
-    owners = request.form.get('owners')
-    log_url = request.form.get('log_url')
-    modmail_guild_id = request.form.get('modmail_guild_id', '')
-
-    # Format the configuration
-    formatted_config = f"""
-Bot Token: {token}
-Guild ID: {guild_id}
-Owners: {owners}
-Log URL: {log_url}
-Modmail Guild ID: {modmail_guild_id}
-    """
-
-    # Return the generated configuration as a JSON response
-    return json({'generatedConfig': formatted_config})
-
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8080)
+            event.preventDefault();
