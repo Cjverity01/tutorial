@@ -177,7 +177,7 @@ async def home(request):
             <h3>Modmail Bot Configuration</h3>
             <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
 
-            <form action="/submit" method="post" id="configForm">
+            <form id="configForm">
                 <label for="token">Bot Token <span style="color: red;">*</span>:</label>
                 <input type="text" id="token" name="token" placeholder="Enter your bot token" required>
 
@@ -198,9 +198,6 @@ async def home(request):
         </div>
 
         <!-- Button to show the generated configuration -->
-        <button id="showConfigBtn" style="display:none;" onclick="showConfig()">Show Generated Configuration</button>
-
-        <!-- Placeholder for generated config -->
         <div id="generatedConfig" style="display:none;">
             <h3>Generated Configuration:</h3>
             <pre id="configOutput"></pre>
@@ -245,40 +242,29 @@ async def home(request):
             submitButton.classList.toggle('dark-mode');
         }
 
-        // Function to show the generated configuration
-        function showConfig() {
-            const form = document.getElementById("configForm");
-            const showConfigBtn = document.getElementById("showConfigBtn");
-            const generatedConfig = document.getElementById("generatedConfig");
-            const configOutput = document.getElementById("configOutput");
+        // Handle form submission via AJAX
+        document.getElementById("configForm").addEventListener("submit", function(event) {
+            event.preventDefault();  // Prevent the form from refreshing the page
+            
+            const form = event.target;
+            const formData = new FormData(form);
 
-            // Simulate generating the config from form data (replace with actual logic)
-            const configData = {
-                token: document.getElementById("token").value,
-                guild_id: document.getElementById("guild_id").value,
-                owners: document.getElementById("owners").value,
-                log_url: document.getElementById("log_url").value,
-                modmail_guild_id: document.getElementById("modmail_guild_id").value
-            };
-
-            // Format the config as a string
-            const formattedConfig = `
-Bot Token: ${configData.token}
-Guild ID: ${configData.guild_id}
-Owners: ${configData.owners}
-Log URL: ${configData.log_url}
-Modmail Guild ID: ${configData.modmail_guild_id}
-            `;
-
-            // Display the generated configuration
-            configOutput.textContent = formattedConfig;
-
-            // Show the config and the button
-            showConfigBtn.style.display = "none";
-            generatedConfig.style.display = "block";
-        }
+            // Send the form data to the backend
+            fetch("/submit", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the generated configuration below the form
+                const generatedConfig = document.getElementById("generatedConfig");
+                const configOutput = document.getElementById("configOutput");
+                configOutput.textContent = data.generatedConfig;
+                generatedConfig.style.display = "block";  // Show the generated config
+            })
+            .catch(error => console.error('Error submitting form:', error));
+        });
     </script>
-
 </body>
 </html>''')
 
@@ -301,26 +287,8 @@ Log URL: {log_url}
 Modmail Guild ID: {modmail_guild_id}
     """
 
-    # Return the page with the generated configuration
-    return html(f'''
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Cj's Commisions Modmail Configuration</title>
-            <style>
-                /* Styles here */
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h2>Generated Configuration:</h2>
-                <pre>{formatted_config}</pre>
-            </div>
-        </body>
-        </html>
-    ''')
+    # Return the generated configuration as a JSON response
+    return json({'generatedConfig': formatted_config})
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8080)
