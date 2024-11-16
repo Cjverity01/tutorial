@@ -1,5 +1,5 @@
 from sanic import Sanic
-from sanic.response import json
+from sanic.response import html, json
 import logging
 
 # Initialize the Sanic app
@@ -8,7 +8,7 @@ app = Sanic("ModmailApp")
 # Serve a simple HTML form for submission
 @app.route('/')
 async def index(request):
-    return """
+    return html("""
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -38,7 +38,7 @@ async def index(request):
             </form>
         </body>
         </html>
-    """
+    """)
 
 @app.route('/submit', methods=["POST"])
 async def submit(request):
