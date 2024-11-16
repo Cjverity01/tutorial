@@ -1,23 +1,109 @@
-/* Base styles for both light and dark mode */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    color: #333; /* Primary text color */
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-.container {
-    width: 80%;
-    max-width: 1000px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #fff;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    transition: background-color 0.3s ease;
-}
-h1, h2 {
-    color: #333; /* Use the primary text color */
-    text-align: center;
-}
-h
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modmail Hosting Configuration</title>
+
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Base styles for both light and dark mode */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333; /* Primary text color */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            transition: background-color 0.3s ease;
+        }
+        h1, h2 {
+            color: #333; /* Use the primary text color */
+            text-align: center;
+        }
+        h3 {
+            color: #333; /* Use the primary text color */
+        }
+        .form-section {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        .form-section input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .form-section input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .form-section input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .message {
+            background-color: #e7f4e4;
+            color: #2d6a4f;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 16px;
+            color: #888;
+            font-family: 'Arial', sans-serif;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Light mode */
+        body.light-mode {
+            background-color: #f4f7fc;
+            color: #333; /* Light mode text color */
+        }
+        .container.light-mode {
+            background-color: #fff;
+        }
+        .form-section.light-mode {
+            background-color: #f8f9fa;
+        }
+
+        /* Dark mode */
+        body.dark-mode {
+            background-color: #181818;
+            color: #ccc; /* Dark mode text
