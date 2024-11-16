@@ -163,7 +163,7 @@ async def home(request):
     <div class="container">
         <!-- Display the custom message -->
         <div class="message">
-            <h2>Welcome to Modmail Hosting</h2>
+            <h2>Welcome to Cj's Commisions Modmail Hosting</h2>
         </div>
 
         <!-- New text added above Modmail Bot Configuration -->
