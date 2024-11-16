@@ -259,8 +259,14 @@ async def home(request):
                 // Display the generated configuration below the form
                 const generatedConfig = document.getElementById("generatedConfig");
                 const configOutput = document.getElementById("configOutput");
-                configOutput.textContent = data.generatedConfig;
-                generatedConfig.style.display = "block";  // Show the generated config
+
+                // Check if staff server is empty or not
+                if (data.generatedConfig.includes("Staff Server: Not Provided")) {
+                    generatedConfig.style.display = "none";  // Hide if "Staff Server" is not provided
+                } else {
+                    generatedConfig.style.display = "block";  // Show if "Staff Server" is provided
+                    configOutput.textContent = data.generatedConfig;
+                }
             })
             .catch(error => console.error('Error submitting form:', error));
         });
@@ -285,8 +291,9 @@ Bot Token: {token}
 Guild ID: {guild_id}
 Owners: {owners}
 Log URL: {log_url}
-Staff Server: {staff_server if staff_server else "Not Provided"}
-    """
+"""
+    if staff_server:  # Only include if the field is filled out
+        formatted_config += f"Staff Server: {staff_server}\n"
 
     # Return the generated configuration as a JSON response
     return json({'generatedConfig': formatted_config})
