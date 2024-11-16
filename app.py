@@ -31,4 +31,29 @@ async def submit_config(request: Request):
     # Extract form data (key-value pairs)
     token = request.form.get('token', [None])[0]
     guild_id = request.form.get('guild_id', [None])[0]
-    owners = request.form.get('owners
+    owners = request.form.get('owners', [None])[0]  # <-- Fixed line
+    log_url = request.form.get('log_url', [None])[0]
+    modmail_guild_id = request.form.get('modmail_guild_id', [None])[0]
+
+    # Prepare formatted output (KEY=VALUE format)
+    config_output = []
+    if token:
+        config_output.append(f"TOKEN={token}")
+    if guild_id:
+        config_output.append(f"GUILD_ID={guild_id}")
+    if owners:
+        config_output.append(f"OWNERS={owners}")
+    if log_url:
+        config_output.append(f"LOG_URL={log_url}")
+    if modmail_guild_id:  # Only include MODMAIL_GUILD_ID if provided
+        config_output.append(f"MODMAIL_GUILD_ID={modmail_guild_id}")
+
+    # Join the list into a single string with line breaks
+    formatted_output = "\n".join(config_output)
+
+    # Return the result to the template
+    return jinja.render('config_form.html', request, formatted_output=formatted_output)
+
+# Ensure app runs only when executed directly (not imported as a module)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080, debug=True)  # Debug enabled
