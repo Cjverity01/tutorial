@@ -1,6 +1,5 @@
 from sanic import Sanic
-from sanic.response import html, json
-from sanic.request import Request
+from sanic.response import html
 
 app = Sanic(__name__)
 
@@ -166,8 +165,9 @@ async def home(request):
         <div class="message">
             <h2>Welcome to Cj's Commisions Modmail Hosting</h2>
         </div>
+
         <div class="form-section">
-            <p style="font-size: 18px; font-weight: bold;">Thank's For subscribing to our Modmail Hosting Service! Please follow the information below and send the generated code to support!</p>
+            <p style="font-size: 18px; font-weight: bold;">Thank you for subscribing to our Modmail Hosting Service! Please follow the information below and send the generated code to support!</p>
             <h3>Modmail Bot Configuration</h3>
             <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
         </div>
@@ -175,6 +175,8 @@ async def home(request):
         <!-- Configuration form section -->
         <div class="form-section">
             <h3>Modmail Bot Configuration</h3>
+            <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
+
             <form action="/submit" method="post">
                 <label for="token">Bot Token <span style="color: red;">*</span>:</label>
                 <input type="text" id="token" name="token" placeholder="Enter your bot token" required>
@@ -195,13 +197,6 @@ async def home(request):
             </form>
         </div>
 
-        <!-- Display the formatted config output if available -->
-        {% if formatted_output %}
-            <div class="form-section">
-                <h3>Generated Configuration:</h3>
-                <pre>{{ formatted_output }}</pre>
-            </div>
-        {% endif %}
     </div>
 
     <div class="footer">
@@ -248,3 +243,24 @@ async def home(request):
 @app.route('/submit', methods=['POST'])
 async def submit(request):
     # Extract form data from the request
+    token = request.form.get('token')
+    guild_id = request.form.get('guild_id')
+    owners = request.form.get('owners')
+    log_url = request.form.get('log_url')
+    modmail_guild_id = request.form.get('modmail_guild_id', '')
+
+    # Format the configuration into the required structure (example)
+    formatted_output = f"""
+Bot Token: {token}
+Guild ID: {guild_id}
+Owners: {owners}
+Log URL: {log_url}
+Modmail Guild ID: {modmail_guild_id if modmail_guild_id else 'N/A'}
+    """
+
+    # Return the form along with the generated configuration
+    return html(f'''
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
