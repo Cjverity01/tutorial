@@ -1,34 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Config Formatter</title>
-</head>
-<body>
-    <h1>Config Formatter</h1>
-    <form action="/submit" method="POST">
-        <label for="token">TOKEN:</label>
-        <input type="text" id="token" name="token"><br>
+from sanic import Sanic
+from sanic.response import html
+from sanic.request import Request
+from sanic_jinja2 import SanicJinja2
 
-        <label for="guild_id">GUILD_ID:</label>
-        <input type="text" id="guild_id" name="guild_id"><br>
+# Initialize the Sanic app
+app = Sanic("ConfigFormatterApp")
 
-        <label for="owners">OWNERS:</label>
-        <input type="text" id="owners" name="owners"><br>
+# Configure Sanic
+app.config['TEMPLATES_AUTO_RELOAD'] = True  # Automatically reload templates on changes
 
-        <label for="log_url">LOG_URL:</label>
-        <input type="text" id="log_url" name="log_url"><br>
+# Initialize the Jinja2 templating engine
+jinja = SanicJinja2(app)
 
-        <label for="modmail_guild_id">MODMAIL_GUILD_ID:</label>
-        <input type="text" id="modmail_guild_id" name="modmail_guild_id"><br>
+# Test route to check if the server is working
+@app.route('/test')
+async def test_route(request):
+    return html('<h1>Server is running!</h1>')
 
-        <input type="submit" value="Submit">
-    </form>
+# Home route: Show the configuration form
+@app.route('/')
+async def config_form(request):
+    return jinja.render('config_form.html', request)
 
-    {% if formatted_output %}
-        <h2>Formatted Output:</h2>
-        <pre>{{ formatted_output }}</pre>
-    {% endif %}
-</body>
-</html>
+# Submit route: Handle form submission and display the formatted result
+@app.route('/submit', methods=['POST'])
+async def submit_c
