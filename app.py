@@ -1,5 +1,5 @@
 from sanic import Sanic
-from sanic.response import html, json
+from sanic.response import html
 
 app = Sanic(__name__)
 
@@ -110,10 +110,7 @@ async def home(request):
             </form>
 
             <!-- Display the generated config if available -->
-            {f"""
-            <h2>Generated Configuration:</h2>
-            <pre>{generated_config}</pre>
-            """ if generated_config else ""}
+            {"<h2>Generated Configuration:</h2><pre>" + generated_config + "</pre>" if generated_config else ""}
         </div>
     </body>
     </html>
