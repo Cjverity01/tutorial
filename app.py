@@ -1,143 +1,123 @@
 from sanic import Sanic
-from sanic.response import html
-from jinja2 import Template
+from sanic.response import html, json
 
 app = Sanic(__name__)
 
-# HTML template
-html_template = Template('''<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modmail Configuration</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #181818;
-            color: #fff;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 90%;
-            max-width: 700px;
-            margin: 20px auto;
-            background-color: #333;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="text"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border: 1px solid #555;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        input[type="text"]:focus {
-            border-color: #4CAF50;
-            outline: none;
-        }
-        input[type="submit"] {
-            width: 100%;
-            padding: 12px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-        .output {
-            margin-top: 20px;
-            background-color: #222;
-            padding: 15px;
-            border-radius: 5px;
-        }
-        .output pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            margin: 0;
-            color: #eee;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Modmail Configuration</h1>
-        <form method="post" action="/submit">
-            <label for="token">Bot Token <span style="color: red;">*</span>:</label>
-            <input type="text" id="token" name="token" required>
+@app.route("/", methods=["GET", "POST"])
+async def home(request):
+    generated_config = ""
+    if request.method == "POST":
+        token = request.form.get("token", "").strip()
+        guild_id = request.form.get("guild_id", "").strip()
+        owners = request.form.get("owners", "").strip()
+        log_url = request.form.get("log_url", "").strip()
+        staff_server = request.form.get("staff_server", "").strip()
 
-            <label for="guild_id">Guild ID <span style="color: red;">*</span>:</label>
-            <input type="text" id="guild_id" name="guild_id" required>
+        # Ensure the Log URL has the .cjscommisions.xyz/ appended
+        if log_url and not log_url.endswith(".cjscommisions.xyz/"):
+            log_url = f"{log_url}.cjscommisions.xyz/"
 
-            <label for="owners">Owners <span style="color: red;">*</span>:</label>
-            <input type="text" id="owners" name="owners" required>
+        # Build the configuration
+        generated_config = f"TOKEN={token}\nGUILD_ID={guild_id}\nOWNERS={owners}\nLOG_URL={log_url}"
+        if staff_server:
+            generated_config += f"\nMODMAIL_GUILD_ID={staff_server}"
 
-            <label for="log_url">Log URL <span style="color: red;">*</span>:</label>
-            <input type="text" id="log_url" name="log_url" placeholder="Enter base log URL" required>
+    return html(f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Modmail Configuration</title>
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+                color: #333;
+            }}
+            .container {{
+                width: 80%;
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 20px;
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }}
+            .form-section {{
+                margin-bottom: 20px;
+            }}
+            .form-section label {{
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }}
+            .form-section input[type="text"] {{
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 16px;
+            }}
+            .form-section input[type="submit"] {{
+                display: block;
+                width: 100%;
+                padding: 10px;
+                background: #28a745;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                font-size: 16px;
+                cursor: pointer;
+            }}
+            .form-section input[type="submit"]:hover {{
+                background: #218838;
+            }}
+            pre {{
+                background: #f8f8f8;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Modmail Bot Configuration</h1>
+            <form method="POST" class="form-section">
+                <label for="token">Bot Token <span style="color: red;">*</span></label>
+                <input type="text" id="token" name="token" placeholder="Enter your bot token" required>
 
-            <label for="staff_server">Staff Server (Optional):</label>
-            <input type="text" id="staff_server" name="staff_server">
+                <label for="guild_id">Guild ID <span style="color: red;">*</span></label>
+                <input type="text" id="guild_id" name="guild_id" placeholder="Enter your guild ID" required>
 
-            <input type="submit" value="Generate Configuration">
-        </form>
-        {% if formatted_output %}
-        <div class="output">
-            <h2>Generated Configuration</h2>
-            <pre>{{ formatted_output }}</pre>
+                <label for="owners">Owners <span style="color: red;">*</span></label>
+                <input type="text" id="owners" name="owners" placeholder="Enter bot owner(s) ID(s)" required>
+
+                <label for="log_url">Log URL <span style="color: red;">*</span></label>
+                <input type="text" id="log_url" name="log_url" placeholder="Enter your log URL" required>
+
+                <label for="staff_server">Staff Server</label>
+                <input type="text" id="staff_server" name="staff_server" placeholder="Enter your staff server ID (optional)">
+
+                <input type="submit" value="Generate Configuration">
+            </form>
+
+            <!-- Display the generated config if available -->
+            {f"""
+            <h2>Generated Configuration:</h2>
+            <pre>{generated_config}</pre>
+            """ if generated_config else ""}
         </div>
-        {% endif %}
-    </div>
-</body>
-</html>
-''')
-
-@app.route("/")
-async def index(request):
-    return html(html_template.render())
-
-@app.route("/submit", methods=["POST"])
-async def submit(request):
-    token = request.form.get("token")
-    guild_id = request.form.get("guild_id")
-    owners = request.form.get("owners")
-    log_url = request.form.get("log_url", "").strip()
-    staff_server = request.form.get("staff_server", "").strip()
-
-    # Append '.cjscommisions.xyz/' to the log URL if it is not already present
-    if not log_url.endswith(".cjscommisions.xyz/"):
-        log_url = f"{log_url}.cjscommisions.xyz/"
-
-    # Generate the configuration
-    formatted_output = f"""
-TOKEN={token}
-GUILD_ID={guild_id}
-OWNERS={owners}
-LOG_URL={log_url}
-    """
-
-    # Include Staff Server in output only if provided
-    if staff_server:
-        formatted_output += f"Staff Server: {staff_server}\n"
-
-    # Re-render the page with the generated configuration
-    return html(html_template.render(formatted_output=formatted_output))
+    </body>
+    </html>
+    """)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
