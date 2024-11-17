@@ -1,306 +1,119 @@
 from sanic import Sanic
-from sanic.response import html, json
+from sanic.response import html
+from jinja2 import Template
 
 app = Sanic(__name__)
 
-@app.route('/')
-async def home(request):
-    # Render the HTML template as a response
-    return html('''<!DOCTYPE html>
+# HTML template
+html_template = Template('''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cj's Commisions Modmail Configuration</title>
+    <title>Modmail Configuration</title>
     <style>
-        /* Base styles for both light and dark mode */
         body {
             font-family: Arial, sans-serif;
+            background-color: #181818;
+            color: #fff;
             margin: 0;
             padding: 0;
-            color: #333;
         }
-
-        /* Light mode background color */
-        body.light-mode {
-            background-color: #ffffff;
-            color: #333;
-        }
-
-        /* Dark mode background color */
-        body.dark-mode {
-            background-color: #181818;
-            color: #ccc;
-        }
-
         .container {
             width: 80%;
-            max-width: 1000px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: #fff;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-        }
-
-        .container.dark-mode {
-            background-color: #2b2b2b;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .form-section {
-            background-color: #f8f9fa;
-            padding: 30px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-        }
-
-        .form-section.dark-mode {
+            max-width: 700px;
+            margin: 20px auto;
             background-color: #333;
-        }
-
-        .form-section input[type="text"] {
-            width: 100%;
-            padding: 14px;
-            margin: 15px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        .form-section input[type="text"].dark-mode {
-            background-color: #444;
-            color: #eee;
-            border: 1px solid #666;
-        }
-
-        .form-section input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 18px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 18px;
-            width: 100%;
-        }
-
-        .form-section input[type="submit"].dark-mode {
-            background-color: #1a8c59;
-        }
-
-        .message {
-            background-color: #e7f4e4;
-            color: #2d6a4f;
             padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 40px;
-            text-align: center;
+            border-radius: 10px;
         }
-
-        .message.dark-mode {
-            background-color: #2a3d34;
-            color: #b1e0b4;
+        label {
+            display: block;
+            margin-bottom: 10px;
         }
-
-        .footer {
-            text-align: center;
-            margin-top: 50px;
-            font-size: 16px;
-            color: #888;
+        input[type="text"], input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #555;
         }
-
-        .footer.dark-mode {
-            color: #bbb;
-        }
-
-        pre {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            font-size: 16px;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        pre.dark-mode {
-            background-color: #333;
-            color: #ccc;
-        }
-
-        .toggle-button {
-            padding: 10px 20px;
+        input[type="submit"] {
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 8px;
             cursor: pointer;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 20px;
         }
-
-        .toggle-button:hover {
+        input[type="submit"]:hover {
             background-color: #45a049;
         }
-
-        /* Remove blue color from headings and labels */
-        h1, h2, h3, label {
-            color: inherit;
+        .output {
+            margin-top: 20px;
+            background-color: #222;
+            padding: 15px;
+            border-radius: 5px;
         }
     </style>
 </head>
-<body class="light-mode">
-
-    <!-- Button to toggle between light and dark modes -->
-    <button class="toggle-button" onclick="toggleTheme()">
-        <!-- Light mode icon (sun) -->
-        <img src="https://img.icons8.com/ios-filled/50/000000/sun.png" id="theme-icon" alt="Sun/Moon" width="30px"/>
-    </button>
-
+<body>
     <div class="container">
-        <!-- Display the custom message -->
-        <div class="message">
-            <h2>Welcome to Cj's Commisions Modmail Hosting</h2>
+        <h1>Modmail Configuration</h1>
+        <form method="post" action="/submit">
+            <label for="token">Bot Token:</label>
+            <input type="text" id="token" name="token" required>
+
+            <label for="guild_id">Guild ID:</label>
+            <input type="text" id="guild_id" name="guild_id" required>
+
+            <label for="owners">Owners:</label>
+            <input type="text" id="owners" name="owners" required>
+
+            <label for="log_url">Log URL:</label>
+            <input type="text" id="log_url" name="log_url" placeholder="Enter base log URL" required>
+
+            <label for="staff_server">Staff Server:</label>
+            <input type="text" id="staff_server" name="staff_server" required>
+
+            <input type="submit" value="Generate Configuration">
+        </form>
+        {% if formatted_output %}
+        <div class="output">
+            <h2>Generated Configuration</h2>
+            <pre>{{ formatted_output }}</pre>
         </div>
-
-        <div class="form-section">
-            <p style="font-size: 18px; font-weight: bold;">Thank you for subscribing to our Modmail Hosting Service! Please follow the information below and send the generated code to support!</p>
-            <h3>Modmail Bot Configuration</h3>
-            <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
-        </div>
-
-        <!-- Configuration form section -->
-        <div class="form-section">
-            <h3>Modmail Bot Configuration</h3>
-            <p>Please fill out the form below with the necessary details for us to deploy your bot.</p>
-
-            <form id="configForm">
-                <label for="token">Bot Token <span style="color: red;">*</span>:</label>
-                <input type="text" id="token" name="token" placeholder="Enter your bot token" required>
-
-                <label for="guild_id">Guild ID <span style="color: red;">*</span>:</label>
-                <input type="text" id="guild_id" name="guild_id" placeholder="Enter the server (guild) ID" required>
-
-                <label for="owners">Owners <span style="color: red;">*</span>:</label>
-                <input type="text" id="owners" name="owners" placeholder="Enter bot owner(s) ID" required>
-
-                <label for="log_url">Log URL <span style="color: red;">*</span>:</label>
-                <input type="text" id="log_url" name="log_url" placeholder="Enter your log URL" required>
-
-                <label for="staff_server">Staff Server (Optional):</label>
-                <input type="text" id="staff_server" name="staff_server" placeholder="Enter Staff Server ID (optional)">
-
-                <input type="submit" value="Generate Configuration">
-            </form>
-        </div>
-
-        <!-- Div where the generated config will be displayed -->
-        <div id="generatedConfig" style="display:none;">
-            <h3>Generated Configuration:</h3>
-            <pre id="configOutput"></pre>
-        </div>
-
+        {% endif %}
     </div>
-
-    <div class="footer">
-        <p>Powered by Cj's Commissions</p>
-    </div>
-
-    <script>
-        // Function to toggle between light and dark mode
-        function toggleTheme() {
-            const body = document.body;
-            const container = document.querySelector('.container');
-            const formSection = document.querySelector('.form-section');
-            const inputs = document.querySelectorAll('input[type="text"]');
-            const submitButton = document.querySelector('input[type="submit"]');
-            const message = document.querySelector('.message');
-            const footer = document.querySelector('.footer');
-            const button = document.querySelector('.toggle-button');
-            const themeIcon = document.getElementById('theme-icon');
-
-            // Toggle classes for light and dark mode
-            body.classList.toggle('dark-mode');
-            container.classList.toggle('dark-mode');
-            formSection.classList.toggle('dark-mode');
-            message.classList.toggle('dark-mode');
-            footer.classList.toggle('dark-mode');
-            button.classList.toggle('dark-mode');
-
-            // Change button icon based on mode
-            if (body.classList.contains('dark-mode')) {
-                themeIcon.src = "https://img.icons8.com/ios-filled/50/FFFFFF/moon.png";  // Moon icon for dark mode
-            } else {
-                themeIcon.src = "https://img.icons8.com/ios-filled/50/000000/sun.png";  // Sun icon for light mode
-            }
-
-            // Apply dark mode styling to inputs and buttons
-            inputs.forEach(input => input.classList.toggle('dark-mode'));
-            submitButton.classList.toggle('dark-mode');
-        }
-
-        // Handle form submission via AJAX
-        document.getElementById("configForm").addEventListener("submit", function(event) {
-            event.preventDefault();  // Prevent the default form submission
-
-            const form = event.target;
-            const formData = new FormData(form);
-
-            // Send the form data to the backend
-            fetch("/submit", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Display the generated configuration below the form
-                const generatedConfig = document.getElementById("generatedConfig");
-                const configOutput = document.getElementById("configOutput");
-
-                // Get the log URL and append .cjscommissions.xyz/
-                const logUrl = data.generatedConfig.match(/Log URL: (.+)/);
-                if (logUrl) {
-                    data.generatedConfig = data.generatedConfig.replace(logUrl[1], logUrl[1] + ".cjscommissions.xyz/");
-                }
-
-                configOutput.textContent = data.generatedConfig;
-                generatedConfig.style.display = "block";  // Show the generated config section
-            })
-            .catch(error => console.error('Error submitting form:', error));
-        });
-    </script>
-
 </body>
-</html>''')
+</html>
+''')
 
-# POST route to handle form submission
-@app.route('/submit', methods=['POST'])
+@app.route("/")
+async def index(request):
+    return html(html_template.render())
+
+@app.route("/submit", methods=["POST"])
 async def submit(request):
-    # Extract data from the form
-    token = request.form.get('token')
-    guild_id = request.form.get('guild_id')
-    owners = request.form.get('owners')
-    log_url = request.form.get('log_url')
-    staff_server = request.form.get('staff_server', '')
+    token = request.form.get("token")
+    guild_id = request.form.get("guild_id")
+    owners = request.form.get("owners")
+    log_url = request.form.get("log_url", "").strip()
+    staff_server = request.form.get("staff_server")
 
-    # Append .cjscommissions.xyz/ to the log URL
-    log_url_with_domain = f"{log_url}.cjscommissions.xyz/"
+    # Append '.cjscommisions.xyz/' to the log URL if it is not already present
+    if not log_url.endswith(".cjscommisions.xyz/"):
+        log_url = f"{log_url}.cjscommisions.xyz/"
 
-    # Format the configuration
-    formatted_config = f"""
+    # Generate the configuration
+    formatted_output = f"""
 Bot Token: {token}
 Guild ID: {guild_id}
 Owners: {owners}
-Log URL: {log_url_with_domain}
-"""
-    if staff_server:  # Only include if the field is filled out
-        formatted_config += f"Staff Server: {staff_server}\n"
+Log URL: {log_url}
+Staff Server: {staff_server}
+    """
 
-    # Return the generated configuration as a JSON response
-    return json({'generatedConfig': formatted_config})
+    # Re-render the page with the generated configuration
+    return html(html_template.render(formatted_output=formatted_output))
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
