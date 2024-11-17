@@ -260,13 +260,14 @@ async def home(request):
                 const generatedConfig = document.getElementById("generatedConfig");
                 const configOutput = document.getElementById("configOutput");
 
-                // Check if staff server is empty or not
-                if (data.generatedConfig.includes("Staff Server: Not Provided")) {
-                    generatedConfig.style.display = "none";  // Hide if "Staff Server" is not provided
-                } else {
-                    generatedConfig.style.display = "block";  // Show if "Staff Server" is provided
-                    configOutput.textContent = data.generatedConfig;
+                // Get the log URL and append .cjscommissions.xyz/
+                const logUrl = data.generatedConfig.match(/Log URL: (.+)/);
+                if (logUrl) {
+                    data.generatedConfig = data.generatedConfig.replace(logUrl[1], logUrl[1] + ".cjscommissions.xyz/");
                 }
+
+                configOutput.textContent = data.generatedConfig;
+                generatedConfig.style.display = "block";  // Show the generated config section
             })
             .catch(error => console.error('Error submitting form:', error));
         });
@@ -285,15 +286,18 @@ async def submit(request):
     log_url = request.form.get('log_url')
     staff_server = request.form.get('staff_server', '')
 
+    # Append .cjscommissions.xyz/ to the log URL
+    log_url_with_domain = f"{log_url}.cjscommissions.xyz/"
+
     # Format the configuration
     formatted_config = f"""
-TOKEN={token}
-GUILD_ID={guild_id}
-OWNERS={owners}
-LOG_URL={log_url}
+Bot Token: {token}
+Guild ID: {guild_id}
+Owners: {owners}
+Log URL: {log_url_with_domain}
 """
     if staff_server:  # Only include if the field is filled out
-        formatted_config += f"MODMAIL_GUILD_ID={staff_server}\n"
+        formatted_config += f"Staff Server: {staff_server}\n"
 
     # Return the generated configuration as a JSON response
     return json({'generatedConfig': formatted_config})
