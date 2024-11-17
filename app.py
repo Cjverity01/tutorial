@@ -134,7 +134,7 @@ LOG_URL={log_url}
 
     # Include Staff Server in output only if provided
     if staff_server:
-    formatted_output += f"MODMAIL_GUILD_ID={staff_server}\n"
+        formatted_output += f"Staff Server: {staff_server}\n"
 
     # Re-render the page with the generated configuration
     return html(html_template.render(formatted_output=formatted_output))
